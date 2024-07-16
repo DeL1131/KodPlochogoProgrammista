@@ -1,16 +1,37 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody))]
 
 public class Bullet : MonoBehaviour
 {
-    public Action<Bullet> BulletAction;
+    [SerializeField] GameObject _prefab;
+    [SerializeField] private float _speed;
+    [SerializeField] float _attackSpeed;
 
-    private void OnCollisionEnter(Collision collision)
+    private Transform _target;
+
+    private bool _isWork = true;
+
+    void Start()
     {
-        if (collision.gameObject.TryGetComponent<Weapon>(out Weapon _)) { }
-        else
-            BulletAction?.Invoke(this);
+        StartCoroutine(_shootingWorker());
+    }
+
+    IEnumerator _shootingWorker()
+    {
+        while (_isWork)
+        {
+
+            Vector3 direction = (_target.position - transform.position).normalized;
+            GameObject NewBullet = Instantiate(_prefab, transform.position + direction, Quaternion.identity);
+
+            NewBullet.GetComponent<Rigidbody>().transform.up = direction;
+            NewBullet.GetComponent<Rigidbody>().velocity = direction * _speed;
+
+            yield return new WaitForSeconds(_attackSpeed);
+        }
+
+
     }
 }
