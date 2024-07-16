@@ -8,7 +8,7 @@ public class GoPlaces : MonoBehaviour
     private int _numberOfPlace;
     private float _speed;
 
-    void Start()
+    private void Start()
     {
         _arrayPlaces = new Transform[_allPlacespoint.childCount];
 
@@ -16,7 +16,7 @@ public class GoPlaces : MonoBehaviour
             _arrayPlaces[i] = _allPlacespoint.GetChild(i).GetComponent<Transform>();
     }
 
-    public void Update()
+    private void Update()
     {
         Transform target = _arrayPlaces[_numberOfPlace];
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
@@ -24,7 +24,7 @@ public class GoPlaces : MonoBehaviour
         if (transform.position == target.position) SelectNextPlace();
     }
 
-    public void SelectNextPlace()
+    private void SelectNextPlace()
     {
         _numberOfPlace++;
 
@@ -34,5 +34,4 @@ public class GoPlaces : MonoBehaviour
         Vector3 target = _arrayPlaces[_numberOfPlace].transform.position;
         transform.forward = target - transform.position;
     }
-
 }

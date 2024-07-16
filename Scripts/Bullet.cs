@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-
 public class Bullet : MonoBehaviour
 {
     [SerializeField] GameObject _prefab;
@@ -13,7 +11,7 @@ public class Bullet : MonoBehaviour
 
     private bool _isWork = true;
 
-    void Start()
+    private void Start()
     {
         StartCoroutine(_shootingWorker());
     }
@@ -22,7 +20,6 @@ public class Bullet : MonoBehaviour
     {
         while (_isWork)
         {
-
             Vector3 direction = (_target.position - transform.position).normalized;
             GameObject NewBullet = Instantiate(_prefab, transform.position + direction, Quaternion.identity);
 
@@ -31,7 +28,5 @@ public class Bullet : MonoBehaviour
 
             yield return new WaitForSeconds(_attackSpeed);
         }
-
-
     }
 }
