@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GoPlaces : MonoBehaviour
+public class PatrolController : MonoBehaviour
 {
     private Transform _allPlacespoint;
     private Transform[] _arrayPlaces;
@@ -12,8 +12,8 @@ public class GoPlaces : MonoBehaviour
     {
         _arrayPlaces = new Transform[_allPlacespoint.childCount];
 
-        for (int i = 0; i < _allPlacespoint.childCount; i++)
-            _arrayPlaces[i] = _allPlacespoint.GetChild(i).GetComponent<Transform>();
+        for (int i = 0; i < _arrayPlaces.Length; i++)
+            _arrayPlaces[i] = _allPlacespoint.GetChild(i);
     }
 
     private void Update()
@@ -21,15 +21,13 @@ public class GoPlaces : MonoBehaviour
         Transform target = _arrayPlaces[_numberOfPlace];
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
 
-        if (transform.position == target.position) SelectNextPlace();
+        if (transform.position == target.position)
+            SelectNextPlace();
     }
 
     private void SelectNextPlace()
     {
-        _numberOfPlace++;
-
-        if (_numberOfPlace == _arrayPlaces.Length)
-            _numberOfPlace = 0;
+        _numberOfPlace = (_numberOfPlace++) % _arrayPlaces.Length;
 
         Vector3 target = _arrayPlaces[_numberOfPlace].transform.position;
         transform.forward = target - transform.position;
